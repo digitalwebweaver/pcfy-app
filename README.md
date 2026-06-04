@@ -1,59 +1,245 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# pcfy.in — Certified Refurbished PC Store
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A full-stack e-commerce platform for selling certified refurbished laptops, desktops, servers, and spare parts. Built with Laravel 12, featuring a B2B quote workflow, admin panel, customer accounts, wishlist, blog, and SEO tools.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Layer | Technology |
+|---|---|
+| Framework | Laravel 12 (PHP 8.2+) |
+| Database | MySQL (via XAMPP) |
+| Auth & Roles | Spatie Laravel Permission |
+| Media | Spatie Laravel Medialibrary |
+| PDF Generation | barryvdh/laravel-dompdf |
+| Excel Import | Maatwebsite/Laravel Excel |
+| Sitemap | Spatie Laravel Sitemap |
+| Slugs | Spatie Laravel Sluggable |
+| Frontend | Vanilla JS, custom CSS (no framework) |
+| Fonts | DM Sans, Barlow Condensed, DM Mono (Google Fonts) |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Storefront
+- **Homepage** — hero, category index, featured products, build-your-match widget, testimonials, trust badges
+- **Shop / Category pages** — filter by brand, condition grade (A/B/C), processor, RAM, storage, price range; sort by relevance/price/newest
+- **Product detail page** — image gallery, spec chips, grade badge, warranty info, add-to-quote
+- **Live search** — AJAX suggestions dropdown with product thumbnails, name, grade, price
+- **Blog** — posts with categories, tags, featured images, SEO meta
+- **Static pages** — CMS-managed via admin
+- **Sitemap & robots.txt** — auto-generated
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Quote System (B2B)
+- **Quote cart** — session-based, add/update/remove items
+- **Quote submission** — customer fills name, email, phone, company, GSTIN, message; form pre-filled for logged-in users
+- **Quote confirmation** — unique quote number (PCF-YYYY-NNNNN format)
+- **Email notifications** — confirmation email to customer on submission
 
-## Laravel Sponsors
+### Customer Accounts
+- Register / Login / Logout (`/account/...`)
+- **Dashboard — Quotes tab** — view all submitted quotes with status (New / Reviewing / Quoted / Won / Lost) and pricing
+- **Dashboard — Saved Items tab** — wishlist with one-click remove
+- Wishlist toggle (♡ button on every product card) — AJAX, red heart when saved, redirects guests to login
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Admin Panel (`/adminhu`)
+- **Dashboard** — stats overview
+- **Products** — full CRUD, bulk CSV import, image upload & reorder (Spatie Medialibrary), quick specs, grade, warranty, stock status, SEO meta
+- **Categories & Brands** — manage with slugs, images, descriptions
+- **Quotes** — list, view, update status, respond, assign to staff, add line-item pricing, PDF export, convert to order, duplicate
+- **Orders** — create from quote, manage status, add shipment tracking
+- **Blog** — posts, categories, tags, featured image, SEO meta
+- **Pages** — static CMS pages
+- **Menus** — custom navigation menus with drag-reorder
+- **Sections / Banners / Testimonials / Trust Items** — homepage content blocks
+- **Media Library** — global media manager
+- **Users** — manage admin staff with roles
+- **Settings** — site name, SEO defaults, contact info, WhatsApp number, announcement bar, footer content, Google Analytics / GTM IDs
 
-### Premium Partners
+### Roles
+| Role | Access |
+|---|---|
+| `super_admin` | Full admin access |
+| `admin` | Full admin access |
+| `sales` | Quotes, orders |
+| `content` | Blog, pages, media |
+| `products` | Products, categories, brands |
+| `customer` | Customer account portal only |
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## Database Tables
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Table | Purpose |
+|---|---|
+| `users` | Admin staff + customer accounts |
+| `roles` / `permissions` | Spatie RBAC |
+| `products` | Product catalogue |
+| `product_specs` | Key-value spec chips |
+| `categories` | Product categories |
+| `brands` | Product brands |
+| `media` | Spatie media attachments |
+| `quotes` | Quote requests |
+| `quote_items` | Line items per quote |
+| `quote_responses` | Admin replies on quotes |
+| `orders` | Converted orders |
+| `order_items` | Line items per order |
+| `order_shipments` | Shipment tracking per order |
+| `wishlists` | User saved products |
+| `blog_posts` | Blog articles |
+| `blog_categories` | Blog categories |
+| `blog_tags` | Blog tags |
+| `pages` | CMS static pages |
+| `menus` / `menu_items` | Navigation menus |
+| `sections` | Homepage content sections |
+| `banners` | Promotional banners |
+| `testimonials` | Customer testimonials |
+| `trust_items` | Trust/certification badges |
+| `settings` | Key-value site settings |
+| `seo_meta` | Per-page SEO overrides |
+| `contact_submissions` | Contact form entries |
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Project Structure
 
-## Security Vulnerabilities
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/          # Admin panel controllers
+│   │   └── Site/           # Frontend controllers
+│   └── Middleware/
+│       ├── Admin/AdminMiddleware.php
+│       └── CustomerMiddleware.php
+├── Models/                 # Eloquent models
+├── Mail/                   # Mailable classes
+├── Imports/                # Excel import classes
+└── Providers/
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+public/
+├── css/
+│   ├── base.css            # Global layout, header, nav, cards
+│   ├── home-a.css          # Hero section
+│   ├── home-b.css          # Category index, product grid
+│   ├── shop.css            # Shop/filter page
+│   └── product.css         # Product detail page
+└── js/
+    ├── home-b.js
+    ├── shop.js
+    └── product.js
+
+resources/views/
+├── account/                # Customer login, register, dashboard
+├── admin/                  # Admin panel views
+├── blog/                   # Blog frontend
+├── components/site/        # Reusable Blade components
+├── emails/                 # Mail templates
+├── layouts/site.blade.php  # Main site layout
+├── pages/                  # Home, shop, product, cart, contact
+└── quotes/                 # Quote submit & confirmation
+```
+
+---
+
+## Local Setup
+
+### Requirements
+- PHP 8.2+
+- MySQL
+- Composer
+- Node.js + npm
+- XAMPP (or equivalent)
+
+### Steps
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/digitalwebweaver/pcfy-app.git
+cd pcfy-app
+
+# 2. Install PHP dependencies
+composer install
+
+# 3. Copy and configure environment
+cp .env.example .env
+php artisan key:generate
+
+# 4. Configure .env — set your DB credentials:
+#    DB_DATABASE=pcfy
+#    DB_USERNAME=root
+#    DB_PASSWORD=
+
+# 5. Run migrations
+php artisan migrate
+
+# 6. Seed initial data (optional)
+php artisan db:seed
+
+# 7. Link storage
+php artisan storage:link
+
+# 8. Create first admin user
+php artisan tinker
+# >>> \App\Models\User::create(['name'=>'Admin','email'=>'admin@pcfy.in','password'=>bcrypt('password')])->assignRole('super_admin');
+
+# 9. Start the dev server
+php artisan serve
+```
+
+Access the site at `http://localhost:8000`
+Admin panel at `http://localhost:8000/adminhu`
+
+---
+
+## Environment Variables (key ones)
+
+```env
+APP_NAME="pcfy.in"
+APP_URL=http://localhost
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=pcfy
+DB_USERNAME=root
+DB_PASSWORD=
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_FROM_ADDRESS="hello@pcfy.in"
+MAIL_FROM_NAME="pcfy.in"
+```
+
+---
+
+## Key Routes
+
+| Route | Description |
+|---|---|
+| `GET /` | Homepage |
+| `GET /shop` | All products with filters |
+| `GET /shop/{slug}` | Category-filtered shop |
+| `GET /products/{slug}` | Product detail page |
+| `GET /quote/cart` | Quote cart |
+| `POST /quote/cart/add` | Add item to quote cart |
+| `GET /quote/submit` | Quote submission form |
+| `POST /quote/submit` | Submit quote |
+| `GET /account/register` | Customer register |
+| `GET /account/login` | Customer login |
+| `GET /account` | Customer dashboard (auth) |
+| `POST /wishlist/toggle` | Toggle saved product (AJAX) |
+| `GET /blog` | Blog index |
+| `GET /adminhu` | Admin dashboard |
+| `GET /sitemap.xml` | Auto-generated sitemap |
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT
